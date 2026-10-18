@@ -403,8 +403,8 @@ class StudyVaultService:
             data = dict(row)
 
         plan = data.get("plan_tier", "free")
-        max_queries = 100 if plan == "student_plus" else 15
-        max_quizzes = 25 if plan == "student_plus" else 5
+        max_queries = 200 if plan == "student_plus" else 50
+        max_quizzes = 50 if plan == "student_plus" else 20
 
         queries_used = data.get("study_queries_count", 0)
         quizzes_used = data.get("quiz_generations_count", 0)
@@ -454,8 +454,36 @@ class StudyVaultService:
                 return f"Daily quiz limit reached ({limits['max_daily_quizzes']} quizzes/day on Free plan). Upgrade to Student Plus for unlimited quizzes!"
         else:
             if limits["study_queries_remaining"] <= 0:
-                return f"Daily study question limit reached ({limits['max_daily_study_queries']} questions/day on Free plan). Upgrade to Student Plus for extended study sessions!"
+                tier_label = "Student Plus" if limits.get("max_daily_study_queries", 50) > 50 else "Free plan"
+                return f"Daily study question limit reached ({limits['max_daily_study_queries']} questions/day on {tier_label}). Upgrade to Student Plus or reset quota for extended study sessions!"
         return None
+
+    def reset_usage(self, uid: str) -> Dict[str, Any]:
+        today_str = date.today().isoformat()
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+            INSERT INTO usage_records (uid, usage_date, study_queries_count, quiz_generations_count, estimated_cost_usd, plan_tier)
+            VALUES (?, ?, 0, 0, 0.0, 'free')
+            ON CONFLICT(uid, usage_date) DO UPDATE SET
+                study_queries_count = 0,
+                quiz_generations_count = 0
+            ''', (uid, today_str))
+            conn.commit()
+        return self.get_usage(uid)
+
+    def set_plan_tier(self, uid: str, plan_tier: str = "student_plus") -> Dict[str, Any]:
+        today_str = date.today().isoformat()
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+            INSERT INTO usage_records (uid, usage_date, study_queries_count, quiz_generations_count, estimated_cost_usd, plan_tier)
+            VALUES (?, ?, 0, 0, 0.0, ?)
+            ON CONFLICT(uid, usage_date) DO UPDATE SET
+                plan_tier = excluded.plan_tier
+            ''', (uid, today_str, plan_tier))
+            conn.commit()
+        return self.get_usage(uid)
 
     # ==========================================
     # UPGRADE INTEREST REGISTRATION

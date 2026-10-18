@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: voicestudy-ai-backend
+    name: voicestudy-ai-revhack-backend
     runtime: python
     region: oregon
     plan: free

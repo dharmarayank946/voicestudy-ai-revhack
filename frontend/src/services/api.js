@@ -1,10 +1,10 @@
 const getApiBaseUrl = () => {
-  const envUrl = import.meta.env.VITE_API_URL;
+  const envUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL;
   if (envUrl) {
     return envUrl.replace(/\/$/, '') + (envUrl.endsWith('/api') ? '' : '/api');
   }
   if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-    return 'https://voicestudy-ai-backend.onrender.com/api';
+    return 'https://voicestudy-ai-revhack-backend.onrender.com/api';
   }
   return 'http://localhost:8000/api';
 };
@@ -337,6 +337,32 @@ export async function analyzeTranscript(transcript, analysisType = 'all', subjec
   if (!response.ok) {
     const err = await response.json().catch(() => ({}));
     throw new Error(err.detail || 'Failed to analyze transcript.');
+  }
+  return await response.json();
+}
+
+export async function resetDailyUsageQuota(uid = 'default_student') {
+  const response = await fetch(`${API_BASE_URL}/usage/reset`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ uid })
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to reset daily quota.');
+  }
+  return await response.json();
+}
+
+export async function setPlanTier(planTier = 'student_plus', uid = 'default_student') {
+  const response = await fetch(`${API_BASE_URL}/usage/plan`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ uid, plan_tier: planTier })
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to update plan tier.');
   }
   return await response.json();
 }

@@ -14,6 +14,13 @@ class UpgradeInterestRequest(BaseModel):
     notes: Optional[str] = None
     uid: Optional[str] = "default_student"
 
+class ResetUsageRequest(BaseModel):
+    uid: Optional[str] = "default_student"
+
+class SetPlanTierRequest(BaseModel):
+    uid: Optional[str] = "default_student"
+    plan_tier: Optional[str] = "student_plus"
+
 @router.get("/usage/status")
 def get_usage_status(uid: Optional[str] = Query(default="default_student")):
     return study_vault.get_usage(uid=uid)
@@ -41,3 +48,24 @@ def get_exam_readiness(uid: Optional[str] = Query(default="default_student")):
         all_stats = memory_service.get_stats(uid_filter=None)
         total_memories = all_stats.get("total_memories", 0)
     return study_vault.calculate_exam_readiness(uid=uid, total_memories=total_memories)
+
+@router.post("/usage/reset")
+def reset_daily_usage(req: Optional[ResetUsageRequest] = None):
+    uid = (req.uid if req and req.uid else "default_student")
+    updated = study_vault.reset_usage(uid=uid)
+    return {
+        "status": "success",
+        "message": f"Daily usage quota reset successfully for {uid}.",
+        "usage": updated
+    }
+
+@router.post("/usage/plan")
+def set_plan_tier_route(req: SetPlanTierRequest):
+    uid = req.uid or "default_student"
+    tier = req.plan_tier or "student_plus"
+    updated = study_vault.set_plan_tier(uid=uid, plan_tier=tier)
+    return {
+        "status": "success",
+        "message": f"Plan tier updated to {tier} for {uid}.",
+        "usage": updated
+    }

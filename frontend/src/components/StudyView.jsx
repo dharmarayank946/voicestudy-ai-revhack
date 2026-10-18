@@ -25,7 +25,7 @@ import {
   Languages
 } from 'lucide-react';
 import { speechService } from '../services/speech';
-import { processStudyRequest, saveMemory, uploadStudyMaterial } from '../services/api';
+import { processStudyRequest, saveMemory, uploadStudyMaterial, resetDailyUsageQuota } from '../services/api';
 // OmiStatusCard removed from student view
 
 export default function StudyView({ 
@@ -372,10 +372,31 @@ export default function StudyView({
               fontSize: '0.85rem',
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
               gap: '0.5rem'
             }}>
-              <AlertCircle size={16} />
-              <span>{validationError}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <AlertCircle size={16} />
+                <span>{validationError}</span>
+              </div>
+              {validationError.includes('Daily study question limit reached') && (
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await resetDailyUsageQuota('default_student');
+                      setValidationError(null);
+                    } catch (e) {
+                      console.warn(e);
+                    }
+                  }}
+                  className="btn-primary"
+                  style={{ fontSize: '0.75rem', padding: '0.25rem 0.65rem' }}
+                >
+                  Reset Daily Quota
+                </button>
+              )}
             </div>
           )}
 

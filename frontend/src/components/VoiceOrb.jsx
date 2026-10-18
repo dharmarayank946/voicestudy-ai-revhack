@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mic, Volume2, Sparkles, Send, AlertCircle, VolumeX, Square, Lightbulb } from 'lucide-react';
 import { speechService } from '../services/speech';
+import { resetDailyUsageQuota } from '../services/api';
 import { processStudyRequest } from '../services/api';
 
 export default function VoiceOrb({ onTranscriptSubmit, onProcessInput, isProcessing: _externalProcessing, responseData: _externalResponseData }) {
@@ -198,12 +199,33 @@ export default function VoiceOrb({ onTranscriptSubmit, onProcessInput, isProcess
           marginBottom: '1rem',
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
           gap: '0.5rem',
           fontSize: '0.85rem',
           color: 'var(--accent-rose)'
         }}>
-          <AlertCircle size={16} />
-          {errorMsg}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <AlertCircle size={16} />
+            <span>{errorMsg}</span>
+          </div>
+          {errorMsg.includes('Daily study question limit reached') && (
+            <button
+              onClick={async () => {
+                try {
+                  await resetDailyUsageQuota('default_student');
+                  setErrorMsg(null);
+                  setOrbState('idle');
+                } catch (e) {
+                  console.warn(e);
+                }
+              }}
+              className="btn-primary"
+              style={{ fontSize: '0.75rem', padding: '0.3rem 0.75rem', height: 'auto', whiteSpace: 'nowrap' }}
+            >
+              Reset Daily Quota
+            </button>
+          )}
         </div>
       )}
 
