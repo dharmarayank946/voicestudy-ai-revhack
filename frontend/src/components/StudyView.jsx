@@ -39,10 +39,23 @@ export default function StudyView({
   const [inputVal, setInputVal] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [speechLang, setSpeechLang] = useState('en-US'); // 'en-US' or 'kn-IN'
+  const [speechLang, setSpeechLang] = useState(() => {
+    try {
+      return localStorage.getItem('voicestudy_pref_lang') || 'en-US';
+    } catch {
+      return 'en-US';
+    }
+  }); // 'en-US', 'en-IN', or 'kn-IN'
   const [responseData, setResponseData] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(initialSubject || 'All');
-  const [speakerEnabled, setSpeakerEnabled] = useState(true);
+  const [speakerEnabled, setSpeakerEnabled] = useState(() => {
+    try {
+      const saved = localStorage.getItem('voicestudy_pref_tts');
+      return saved !== null ? saved === 'true' : true;
+    } catch {
+      return true;
+    }
+  });
   const [conversationHistory, setConversationHistory] = useState([]);
   const [resumedSession, setResumedSession] = useState(initialSession || null);
   

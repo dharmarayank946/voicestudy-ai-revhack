@@ -349,6 +349,7 @@ export default function App() {
               healthData={healthData}
               theme={theme}
               onSelectTheme={setTheme}
+              setActiveTab={setActiveTab}
             />
           )}
 

@@ -17,9 +17,29 @@ export default function QuizView({ initialTopic = '', onQuizGenerated, setActive
   const [topic, setTopic] = useState(() => initialTopic?.trim() || 'DBMS Concurrency Control');
   const [lectureNotes, setLectureNotes] = useState('');
   const [showLectureInput, setShowLectureInput] = useState(false);
-  const [numQuestions, setNumQuestions] = useState(5);
-  const [difficulty, setDifficulty] = useState('medium');
-  const [instantFeedback, setInstantFeedback] = useState(true);
+  const [numQuestions, setNumQuestions] = useState(() => {
+    try {
+      const saved = localStorage.getItem('voicestudy_pref_num_q');
+      return saved ? Number(saved) : 5;
+    } catch {
+      return 5;
+    }
+  });
+  const [difficulty, setDifficulty] = useState(() => {
+    try {
+      return localStorage.getItem('voicestudy_pref_diff') || 'medium';
+    } catch {
+      return 'medium';
+    }
+  });
+  const [instantFeedback, setInstantFeedback] = useState(() => {
+    try {
+      const saved = localStorage.getItem('voicestudy_pref_instant_feedback');
+      return saved !== null ? saved === 'true' : true;
+    } catch {
+      return true;
+    }
+  });
   
   const [quizData, setQuizData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);

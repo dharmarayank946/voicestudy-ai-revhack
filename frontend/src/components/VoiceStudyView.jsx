@@ -25,8 +25,21 @@ export default function VoiceStudyView({
   setActiveTab,
   onSelectQuizTopic
 }) {
-  const [selectedLang, setSelectedLang] = useState('en-US');
-  const [ttsEnabled, setTtsEnabled] = useState(true);
+  const [selectedLang, setSelectedLang] = useState(() => {
+    try {
+      return localStorage.getItem('voicestudy_pref_lang') || 'en-US';
+    } catch {
+      return 'en-US';
+    }
+  });
+  const [ttsEnabled, setTtsEnabled] = useState(() => {
+    try {
+      const saved = localStorage.getItem('voicestudy_pref_tts');
+      return saved !== null ? saved === 'true' : true;
+    } catch {
+      return true;
+    }
+  });
   const [isListening, setIsListening] = useState(false);
   const [interimTranscript, setInterimTranscript] = useState('');
   const [conversationHistory, setConversationHistory] = useState([]);

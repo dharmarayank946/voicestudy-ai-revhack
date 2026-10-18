@@ -7,12 +7,21 @@ export class SpeechService {
     this.selectedVoice = null;
     this.speechRate = 1.0;
 
+    try {
+      const savedRate = localStorage.getItem('voicestudy_pref_voice_rate');
+      if (savedRate) this.speechRate = parseFloat(savedRate) || 1.0;
+    } catch {}
+
     if (this.isSupported) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       this.recognition = new SpeechRecognition();
       this.recognition.continuous = false;
       this.recognition.interimResults = true;
-      this.recognition.lang = 'en-US';
+      try {
+        this.recognition.lang = localStorage.getItem('voicestudy_pref_lang') || 'en-US';
+      } catch {
+        this.recognition.lang = 'en-US';
+      }
     }
 
     if (this.synth) {
@@ -25,7 +34,20 @@ export class SpeechService {
 
   loadVoices() {
     if (!this.synth) return [];
-    this.voices = this.synth.getVoices().filter(v => v.lang.startsWith('en'));
+    const all = this.synth.getVoices();
+    // Prioritize English and regional Indian languages like Kannada, or fallback to all
+    const filtered = all.filter(v => v.lang.startsWith('en') || v.lang.startsWith('kn'));
+    this.voices = filtered.length > 0 ? filtered : all;
+    
+    let savedVoiceURI = null;
+    try {
+      savedVoiceURI = localStorage.getItem('voicestudy_pref_voice_uri');
+    } catch {}
+
+    if (savedVoiceURI) {
+      const found = this.voices.find(v => v.voiceURI === savedVoiceURI || v.name === savedVoiceURI);
+      if (found) this.selectedVoice = found;
+    }
     if (!this.selectedVoice && this.voices.length > 0) {
       this.selectedVoice = this.voices.find(v => v.default || v.name.includes('Natural') || v.name.includes('Google')) || this.voices[0];
     }
