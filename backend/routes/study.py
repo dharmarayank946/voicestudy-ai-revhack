@@ -200,11 +200,11 @@ def analyze_transcript(req: AnalyzeRequest):
     }
 
     try:
-        if req.analysis_type in ["all", "summary"]:
+        if req.analysis_type in ["all", "summary", "comprehensive"]:
             sum_res = summarizer_agent.summarize_transcript(req.transcript)
             results["summary"] = sum_res.get("summary", "")
 
-        if req.analysis_type in ["all", "action_items"]:
+        if req.analysis_type in ["all", "action_items", "comprehensive"]:
             act_res = action_item_agent.extract_action_items(req.transcript)
             results["action_items"] = act_res.get("action_items", "")
 
