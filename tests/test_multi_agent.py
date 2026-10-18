@@ -13,6 +13,7 @@ client = TestClient(app)
 
 class TestMultiAgentOrchestration(unittest.TestCase):
     def setUp(self):
+        self.test_uid = "test_multi_agent_isolated_user"
         self.sample_meeting_transcript = (
             "Alex: Welcome everyone. In today's standup, we decided to migrate our persistent vector storage "
             "to Qdrant Cloud cluster by Friday. Sarah will handle the webhook payload formatting from the Omi device. "
@@ -58,7 +59,8 @@ class TestMultiAgentOrchestration(unittest.TestCase):
         """Test Manager Agent identifies action items request and delegates to Action Item Extractor Agent."""
         res = client.post("/api/study", json={
             "transcript": "Extract all action items, tasks, and deadlines from today's sprint meeting: Alex will complete frontend by Friday.",
-            "source": "text_fallback"
+            "source": "text_fallback",
+            "uid": self.test_uid
         })
         self.assertEqual(res.status_code, 200)
         data = res.json()
@@ -73,7 +75,8 @@ class TestMultiAgentOrchestration(unittest.TestCase):
             "transcript": (
                 "Please summarize this meeting and extract all action items and deadlines: " + self.sample_meeting_transcript
             ),
-            "source": "text_fallback"
+            "source": "text_fallback",
+            "uid": "test_multi_agent_quota_isolated_05"
         })
         self.assertEqual(res.status_code, 200)
         data = res.json()
@@ -115,7 +118,8 @@ class TestMultiAgentOrchestration(unittest.TestCase):
                    side_effect=LyzrAPIError("Lyzr API returned HTTP 500: Internal Server Error")):
             res = client.post("/api/study", json={
                 "transcript": "Extract action items and summary from this session.",
-                "source": "text_fallback"
+                "source": "text_fallback",
+                "uid": "test_multi_agent_quota_isolated_08"
             })
             self.assertEqual(res.status_code, 200)
             data = res.json()

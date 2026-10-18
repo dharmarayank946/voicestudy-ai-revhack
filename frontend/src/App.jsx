@@ -17,6 +17,7 @@ import PricingView from './components/PricingView';
 import SettingsView from './components/SettingsView';
 import HelpView from './components/HelpView';
 import ProfileView from './components/ProfileView';
+import WorkspacesView from './components/WorkspacesView';
 import { fetchHealth, getRecentMemories, processStudyRequest } from './services/api';
 
 export default function App() {
@@ -200,8 +201,16 @@ export default function App() {
               responseData={responseData}
               setActiveTab={setActiveTab}
               onSelectSubject={handleSelectSubject}
+              onResumeSession={handleResumeSession}
               memories={memories}
               stats={memoryStats}
+            />
+          )}
+
+          {activeTab === 'workspaces' && (
+            <WorkspacesView
+              setActiveTab={setActiveTab}
+              onSelectSubject={handleSelectSubject}
             />
           )}
 

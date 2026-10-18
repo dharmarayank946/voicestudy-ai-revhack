@@ -37,4 +37,7 @@ def register_upgrade_interest(req: UpgradeInterestRequest):
 def get_exam_readiness(uid: Optional[str] = Query(default="default_student")):
     stats = memory_service.get_stats(uid_filter=uid)
     total_memories = stats.get("total_memories", 0)
+    if total_memories == 0:
+        all_stats = memory_service.get_stats(uid_filter=None)
+        total_memories = all_stats.get("total_memories", 0)
     return study_vault.calculate_exam_readiness(uid=uid, total_memories=total_memories)

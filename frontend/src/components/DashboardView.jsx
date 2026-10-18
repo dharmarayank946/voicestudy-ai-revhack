@@ -91,7 +91,7 @@ export default function DashboardView({
               aria-label="Start Studying with Voice and AI Agents"
             >
               <Zap size={18} />
-              <span>Start Studying</span>
+              <span>Student Study</span>
               <ArrowRight size={18} />
             </button>
 
@@ -126,7 +126,7 @@ export default function DashboardView({
 
           <div className="hero-pills-row">
             <span className="hero-pill-item">
-              <Radio size={13} color="var(--accent-cyan)" /> Omi Wearable Audio
+              <Radio size={13} color="var(--accent-cyan)" /> Voice Ingestion (EN / KN)
             </span>
             <span className="hero-pill-item">
               <Brain size={13} color="var(--accent-emerald)" /> Qdrant 1536-dim Vectors
@@ -281,13 +281,15 @@ export default function DashboardView({
           <button 
             className="quick-action-btn"
             onClick={() => setActiveTab && setActiveTab('study')}
+            id="qa-student-study-btn"
+            aria-label="Open Student Study Interface"
           >
-            <div style={{ padding: '0.45rem', borderRadius: '10px', background: 'rgba(56, 189, 248, 0.12)' }}>
-              <Zap size={18} color="var(--accent-cyan)" />
+            <div style={{ padding: '0.45rem', borderRadius: '10px', background: 'rgba(115, 87, 255, 0.15)' }}>
+              <BookOpen size={18} color="var(--brand-violet)" />
             </div>
             <div>
-              <div style={{ fontSize: '0.86rem', fontWeight: '700' }}>Voice Study</div>
-              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Dictate or paste lectures</div>
+              <div style={{ fontSize: '0.86rem', fontWeight: '700' }}>Student Study</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Launch AI study tutor</div>
             </div>
           </button>
 
@@ -513,7 +515,7 @@ export default function DashboardView({
                     <Radio size={14} /> 1. Spoken Audio
                   </div>
                   <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', margin: 0 }}>
-                    Speak into your microphone or Omi wearable to ingest raw lecture audio.
+                    Speak into your microphone or paste raw lecture audio notes.
                   </p>
                 </div>
 
@@ -698,10 +700,10 @@ export default function DashboardView({
               Spoken Lecture Ingestion
             </h3>
             <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: '1.6', flex: 1 }}>
-              Streams spoken audio from Omi wearables or browser microphones. The voice adapter normalizes transcripts, cleans filler words, and prepares the text for AI analysis.
+              Streams spoken audio from device microphones. The voice adapter normalizes transcripts, cleans filler words, and prepares the text for AI analysis.
             </p>
             <div style={{ marginTop: '1.25rem', padding: '0.65rem 0.85rem', background: 'var(--bg-input)', borderRadius: '10px', fontSize: '0.78rem', color: 'var(--text-muted)', border: '1px solid var(--border-subtle)' }}>
-              <code className="mono-font" style={{ color: 'var(--accent-cyan)' }}>source: 'omi' | 'web_speech'</code>
+              <span className="badge badge-cyan">Web Speech Voice Ingestion</span>
             </div>
           </div>
 

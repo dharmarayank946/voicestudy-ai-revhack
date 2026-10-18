@@ -237,27 +237,46 @@ export default function PricingView({ setActiveTab }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.88rem' }}>
                 <Check size={16} color="var(--brand-violet)" />
-                <span><strong>100 AI Study Questions</strong> per day</span>
+                <span><strong>100 AI Study Questions</strong> / day (Grounded multi-agent reasoning)</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.88rem' }}>
                 <Check size={16} color="var(--brand-violet)" />
-                <span><strong>25 Adaptive Quizzes</strong> per day</span>
+                <span><strong>25 Active Recall Quizzes</strong> / day (Detailed rationales & diagnostics)</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.88rem' }}>
                 <Check size={16} color="var(--brand-violet)" />
-                <span><strong>Unlimited Safe Document Uploads</strong> (.txt, .md, .pdf)</span>
+                <span><strong>Unlimited Qdrant Vector Memory</strong> (Permanent semester retention)</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.88rem' }}>
                 <Check size={16} color="var(--brand-violet)" />
-                <span><strong>Deep Weak-Topic Identification</strong> & Remediation</span>
+                <span><strong>Automated Revision Timetable</strong> & Exam Countdown Tracking</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.88rem' }}>
                 <Check size={16} color="var(--brand-violet)" />
-                <span><strong>Transparent Readiness Score</strong> & Revision Timetable</span>
+                <span><strong>Lecture Intelligence Analyzer</strong> (Transcript digests & action items)</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.88rem' }}>
                 <Check size={16} color="var(--brand-violet)" />
-                <span>Priority Lyzr reasoning & genuine multi-agent orchestration</span>
+                <span><strong>Bilingual Voice Recognition</strong> (English & Kannada live speech)</span>
+              </div>
+
+              {/* Planned Features Clearly Labeled */}
+              <div style={{ marginTop: '0.5rem', paddingTop: '0.75rem', borderTop: '1px dashed var(--border-subtle)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  Roadmap Features (In Active Development):
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  <span className="badge badge-indigo" style={{ fontSize: '0.65rem', padding: '0.1rem 0.4rem' }}>Planned</span>
+                  <span>Omi Wearable Live Bluetooth Streaming Adapter</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  <span className="badge badge-indigo" style={{ fontSize: '0.65rem', padding: '0.1rem 0.4rem' }}>Planned</span>
+                  <span>Kannada Spoken Audio Synthesis (TTS Voice)</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  <span className="badge badge-indigo" style={{ fontSize: '0.65rem', padding: '0.1rem 0.4rem' }}>Planned</span>
+                  <span>Multi-Student Peer Study Groups & Shared Decks</span>
+                </div>
               </div>
             </div>
           </div>

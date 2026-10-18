@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 import { speechService } from '../services/speech';
 import { processStudyRequest, saveMemory, uploadStudyMaterial } from '../services/api';
-import OmiStatusCard from './OmiStatusCard';
+// OmiStatusCard removed from student view
 
 export default function StudyView({ 
   setActiveTab, 
@@ -808,7 +808,29 @@ export default function StudyView({
 
       {/* Sidebar Info */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-        <OmiStatusCard />
+        <div className="glass-card" style={{ padding: '1.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <Mic size={18} color="var(--brand-violet)" />
+            <strong style={{ fontSize: '0.92rem', color: 'var(--text-primary)' }}>Voice & Audio Assistant</strong>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span>Microphone Input:</span>
+              <span className="badge badge-emerald" style={{ fontSize: '0.7rem' }}>Web Speech Ready</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span>Supported Languages:</span>
+              <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>EN (India/US) & KN (Kannada)</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span>Speech Synthesis:</span>
+              <span style={{ fontWeight: '600', color: 'var(--accent-cyan)' }}>Active Read-Aloud</span>
+            </div>
+            <p style={{ margin: '0.4rem 0 0 0', fontSize: '0.76rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
+              Speak notes hands-free or dictate lecture questions. Answers are retrieved directly from your indexed notes.
+            </p>
+          </div>
+        </div>
 
         <div className="glass-card">
           <h4 style={{ fontSize: '0.95rem', fontWeight: '700', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>

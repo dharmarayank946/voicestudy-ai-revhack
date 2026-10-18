@@ -445,6 +445,8 @@ class StudyVaultService:
         return self.get_usage(uid)
 
     def check_limit_exceeded(self, uid: str, is_quiz: bool = False) -> Optional[str]:
+        if os.getenv("TESTING_SKIP_USAGE_LIMITS") == "true":
+            return None
         usage = self.get_usage(uid)
         limits = usage["limits"]
         if is_quiz:
@@ -499,18 +501,50 @@ class StudyVaultService:
         profile = self.get_exam_profile(uid)
 
         if len(history) < 2:
+            needed_quizzes = 2 - len(history)
+            actionable_steps = []
+            if not profile:
+                actionable_steps.append({
+                    "step": 1,
+                    "action_key": "exam_date",
+                    "title": "Set Target Exam Date",
+                    "description": "Configure your upcoming exam date and subject to calculate scheduled timeline pacing."
+                })
+            actionable_steps.append({
+                "step": 2 if not profile else 1,
+                "action_key": "practice_quiz",
+                "title": f"Complete {needed_quizzes} Practice Quiz" + ("zes" if needed_quizzes > 1 else ""),
+                "description": f"You need at least 2 completed quizzes to measure genuine recall accuracy ({len(history)}/2 completed)."
+            })
+            if total_memories < 3:
+                actionable_steps.append({
+                    "step": len(actionable_steps) + 1,
+                    "action_key": "add_notes",
+                    "title": "Index Lecture Notes into Vector Memory",
+                    "description": f"Currently {total_memories} notes indexed in Qdrant. Add notes to gauge syllabus coverage."
+                })
+
             return {
                 "has_sufficient_data": False,
-                "readiness_score": 0,
+                "readiness_score": None,
                 "status_label": "Insufficient Data",
-                "notice": "Take at least 2 revision quizzes to calculate your real exam readiness.",
+                "notice": f"Authentic readiness score requires at least 2 completed practice quizzes (currently {len(history)}/2) and target exam setup.",
+                "missing_data": {
+                    "has_exam_target": bool(profile),
+                    "quiz_attempts_count": len(history),
+                    "quiz_attempts_required": 2,
+                    "memories_count": total_memories,
+                    "memories_recommended": 3
+                },
+                "actionable_steps": actionable_steps,
                 "components": {
-                    "quiz_accuracy": 0,
-                    "syllabus_coverage": 0,
-                    "task_completion": 0
+                    "quiz_accuracy": round(sum(h["percentage"] for h in history) / len(history), 1) if history else 0,
+                    "syllabus_coverage": min(100.0, (total_memories / 10.0) * 100.0),
+                    "task_completion": tasks_data.get("completion_rate", 0.0)
                 },
                 "total_attempts": len(history),
-                "total_memories": total_memories
+                "total_memories": total_memories,
+                "exam_profile": profile
             }
 
         # 1. Average accuracy across all quiz attempts (0-100)

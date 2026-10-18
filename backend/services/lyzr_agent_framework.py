@@ -156,9 +156,13 @@ class LyzrAgentFramework:
                         logger.warning("[LYZR] Lyzr API response lacked 'response' field, falling back.")
                     else:
                         err_snippet = response.text[:200]
-                        logger.warning(f"[LYZR] API returned HTTP {response.status_code}: {err_snippet}. Falling back.")
+                        logger.warning(f"[LYZR] API returned HTTP {response.status_code}: {err_snippet}")
+                        raise LyzrAPIError(f"Lyzr API returned HTTP {response.status_code}: {err_snippet}")
             except httpx.TimeoutException as te:
-                logger.warning(f"[LYZR] Timeout calling Lyzr API at {self.chat_url} after {timeout_sec}s. Falling back to offline engine.")
+                logger.warning(f"[LYZR] Timeout calling Lyzr API at {self.chat_url} after {timeout_sec}s.")
+                raise LyzrTimeoutError(f"Lyzr Agent request timed out after {timeout_sec}s: {te}")
+            except LyzrAPIError:
+                raise
             except Exception as e:
                 logger.warning(f"[LYZR] Error communicating with Lyzr API: {e}. Falling back to offline engine.")
 

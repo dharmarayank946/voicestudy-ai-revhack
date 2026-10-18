@@ -157,19 +157,108 @@ export default function ProgressView({ memories = [], stats = {}, setActiveTab, 
             </p>
           </div>
         ) : (
-          <div style={{ marginTop: '1.25rem', padding: '1rem', background: 'rgba(245, 158, 11, 0.08)', borderRadius: '10px', border: '1px solid rgba(245, 158, 11, 0.25)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
-            <span style={{ fontSize: '0.85rem', color: 'var(--accent-amber)' }}>
-              Take at least 2 active recall quizzes to calculate an accurate, honest readiness indicator.
-            </span>
-            {setActiveTab && (
-              <button 
-                className="btn-primary" 
-                onClick={() => setActiveTab('quiz')}
-                style={{ padding: '0.45rem 0.95rem', fontSize: '0.8rem' }}
-              >
-                Take a Revision Quiz
-              </button>
-            )}
+          <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border-subtle)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ padding: '1rem 1.25rem', background: 'rgba(245, 158, 11, 0.08)', borderRadius: '12px', border: '1px solid rgba(245, 158, 11, 0.25)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                <AlertCircle size={16} color="var(--accent-amber)" />
+                <strong style={{ fontSize: '0.92rem', color: 'var(--text-primary)' }}>
+                  Readiness Score Status: Insufficient Real Data
+                </strong>
+              </div>
+              <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.55' }}>
+                VoiceStudy AI calculates your exam readiness score strictly from verified metrics: <strong>(Quiz Accuracy &times; 40%) + (Syllabus Coverage &times; 30%) + (Task Completion &times; 30%)</strong>. To maintain strict academic integrity and avoid misleading progress, scores are never estimated or hardcoded with placeholder numbers until the prerequisites below are met.
+              </p>
+            </div>
+
+            {/* Actionable Calibration Checklist */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Actionable Steps to Generate Your Score:
+              </div>
+
+              {/* Requirement 1: Exam Target */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.85rem 1.2rem', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border-subtle)', flexWrap: 'wrap', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: readinessData?.missing_data?.has_exam_target ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {readinessData?.missing_data?.has_exam_target ? <CheckCircle2 size={18} color="var(--accent-emerald)" /> : <Target size={18} color="var(--accent-amber)" />}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.88rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                      1. Target Exam & Date
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                      {readinessData?.missing_data?.has_exam_target ? 'Upcoming exam date configured' : 'Set your exam date and subject to establish timeline pacing'}
+                    </div>
+                  </div>
+                </div>
+                {setActiveTab && (
+                  <button 
+                    onClick={() => setActiveTab('dashboard')} 
+                    className={readinessData?.missing_data?.has_exam_target ? 'btn-secondary' : 'btn-primary'}
+                    style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}
+                  >
+                    {readinessData?.missing_data?.has_exam_target ? 'Edit Target' : 'Set Exam Date'}
+                  </button>
+                )}
+              </div>
+
+              {/* Requirement 2: Practice Quizzes */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.85rem 1.2rem', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border-subtle)', flexWrap: 'wrap', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: (readinessData?.missing_data?.quiz_attempts_count || 0) >= 2 ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {(readinessData?.missing_data?.quiz_attempts_count || 0) >= 2 ? <CheckCircle2 size={18} color="var(--accent-emerald)" /> : <HelpCircle size={18} color="var(--accent-amber)" />}
+                  </div>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ fontSize: '0.88rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                        2. Active Recall Quizzes ({readinessData?.missing_data?.quiz_attempts_count || 0}/2 Completed)
+                      </span>
+                      <span className={`badge ${(readinessData?.missing_data?.quiz_attempts_count || 0) >= 2 ? 'badge-emerald' : 'badge-amber'}`} style={{ fontSize: '0.68rem' }}>
+                        {(readinessData?.missing_data?.quiz_attempts_count || 0) >= 2 ? 'Baseline Ready' : 'Need Practice'}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                      Complete at least 2 practice quizzes to baseline your genuine retention accuracy
+                    </div>
+                  </div>
+                </div>
+                {setActiveTab && (
+                  <button 
+                    onClick={() => setActiveTab('quiz')} 
+                    className="btn-primary"
+                    style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}
+                  >
+                    Take Practice Quiz
+                  </button>
+                )}
+              </div>
+
+              {/* Requirement 3: Stored Memories */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.85rem 1.2rem', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border-subtle)', flexWrap: 'wrap', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: totalMemories > 0 ? 'rgba(16, 185, 129, 0.12)' : 'rgba(56, 189, 248, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {totalMemories > 0 ? <CheckCircle2 size={18} color="var(--accent-emerald)" /> : <Brain size={18} color="var(--accent-cyan)" />}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.88rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                      3. Lecture Notes Indexed ({totalMemories} Notes in Store)
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                      {totalMemories >= 3 ? 'Syllabus coverage baseline satisfied' : 'Save or dictate lecture notes to index your course syllabus in Qdrant'}
+                    </div>
+                  </div>
+                </div>
+                {setActiveTab && (
+                  <button 
+                    onClick={() => setActiveTab('study')} 
+                    className="btn-secondary"
+                    style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}
+                  >
+                    Add Study Notes
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>

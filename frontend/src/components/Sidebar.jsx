@@ -41,12 +41,13 @@ export default function Sidebar({
       items: [
         { id: 'home', label: 'Home', icon: Compass },
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { id: 'workspaces', label: 'AI Workspaces', icon: Wand2 },
       ]
     },
     {
       title: 'STUDY & PRACTICE',
       items: [
-        { id: 'study', label: 'AI Study Tutor', icon: BookOpen },
+        { id: 'study', label: 'Student Study', icon: BookOpen },
         { id: 'voice', label: 'Voice Study Room', icon: Mic },
         { id: 'quiz', label: 'Quiz & Practice', icon: HelpCircle },
         { id: 'flashcards', label: 'Flashcards', icon: RotateCw },

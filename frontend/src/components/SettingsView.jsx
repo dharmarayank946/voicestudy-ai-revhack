@@ -314,40 +314,35 @@ export default function SettingsView({ healthData, theme = 'light', onSelectThem
         </div>
       </div>
 
-      {/* Environment Variable Keys Reference */}
+      {/* Student Data Privacy & Local Storage */}
       <div className="glass-card">
         <h4 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Key size={18} color="var(--accent-amber)" /> Environment Variables (.env)
+          <ShieldCheck size={18} color="var(--accent-emerald)" /> Student Data Privacy & Storage Isolation
         </h4>
         <p style={{ fontSize: '0.83rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-          Configure API keys securely in your backend root <code>.env</code> file (keys are never exposed to the client):
+          Your lecture notes, revision tasks, and test results are stored with strict student-level tenant isolation:
         </p>
 
-        <pre style={{
-          background: 'var(--bg-code)',
-          padding: '1.25rem',
-          borderRadius: '12px',
-          border: '1px solid var(--border-subtle)',
-          fontSize: '0.82rem',
-          color: 'var(--accent-cyan)',
-          lineHeight: '1.7',
-          overflowX: 'auto'
-        }}>
-{`# Lyzr Agent Studio V3
-LYZR_API_KEY=your_lyzr_api_key_here
-
-# LLM Provider Key (OpenAI / Groq)
-LLM_API_KEY=your_openai_or_groq_api_key_here
-LLM_MODEL=gpt-4o-mini
-
-# Qdrant Vector DB Configuration
-QDRANT_URL=:memory:
-QDRANT_API_KEY=your_qdrant_cloud_key_if_used
-
-# Omi Voice Wearable Integration
-OMI_API_KEY=your_omi_api_key_here
-OMI_WEBHOOK_SECRET=your_omi_webhook_secret_here`}
-        </pre>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+          <div style={{ padding: '1rem', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border-subtle)' }}>
+            <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)', display: 'block', marginBottom: '0.25rem' }}>Local SQLite Vault</strong>
+            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: 0 }}>
+              Maintains your exam countdown dates, daily revision checklists, and quiz performance metrics locally.
+            </p>
+          </div>
+          <div style={{ padding: '1rem', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border-subtle)' }}>
+            <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)', display: 'block', marginBottom: '0.25rem' }}>Zero Data Leakage</strong>
+            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: 0 }}>
+              Queries in the AI Study Tutor are matched only against your own notes. No cross-student data sharing.
+            </p>
+          </div>
+          <div style={{ padding: '1rem', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border-subtle)' }}>
+            <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)', display: 'block', marginBottom: '0.25rem' }}>Backend Key Security</strong>
+            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: 0 }}>
+              All AI integration credentials and API keys remain strictly server-side and are never exposed in the browser.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

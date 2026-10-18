@@ -1,3 +1,4 @@
+import uuid
 import os
 import unittest
 from fastapi.testclient import TestClient
@@ -10,6 +11,7 @@ from backend.agents.memory_agent import study_memory_agent
 class TestAITutor(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
+        self.test_uid = f"tutor_test_{uuid.uuid4().hex[:8]}"
 
     def test_framework_status_reporting(self):
         status = lyzr_framework.get_framework_status()
@@ -24,7 +26,8 @@ class TestAITutor(unittest.TestCase):
         """Verify Asking 'What is photosynthesis?' produces a simple natural explanation."""
         response = self.client.post("/api/study", json={
             "transcript": "What is photosynthesis?",
-            "source": "text_fallback"
+            "source": "text_fallback",
+            "uid": self.test_uid
         })
         self.assertEqual(response.status_code, 200)
         data = response.json()

@@ -15,7 +15,7 @@ import {
   BookOpen
 } from 'lucide-react';
 import VoiceOrb from './VoiceOrb';
-import OmiStatusCard from './OmiStatusCard';
+// OmiStatusCard removed from student view
 import { speechService } from '../services/speech';
 
 export default function VoiceStudyView({ 
@@ -336,8 +336,30 @@ export default function VoiceStudyView({
           )}
         </div>
 
-        {/* Embedded Omi Hardware Status Card */}
-        <OmiStatusCard />
+        {/* Student Voice Room Guide Card */}
+        <div className="glass-card" style={{ padding: '1.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <Radio size={18} color="var(--accent-emerald)" />
+            <strong style={{ fontSize: '0.92rem', color: 'var(--text-primary)' }}>Voice Room Features</strong>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span>Live Recognition:</span>
+              <span className="badge badge-emerald" style={{ fontSize: '0.7rem' }}>Active</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span>Kannada Support:</span>
+              <span className="badge badge-cyan" style={{ fontSize: '0.7rem' }}>kn-IN Enabled</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span>Vector Grounding:</span>
+              <span className="badge badge-purple" style={{ fontSize: '0.7rem' }}>Qdrant 1536-dim</span>
+            </div>
+            <p style={{ margin: '0.4rem 0 0 0', fontSize: '0.76rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
+              Speak naturally into your device microphone. VoiceStudy AI transcribes, indexes, and speaks back explanations in real time.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
