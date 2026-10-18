@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -42,6 +42,14 @@ jobs:
 
       - name: Create .nojekyll in Dist
         run: touch frontend/dist/.nojekyll
+
+      - name: Deploy to gh-pages Branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/dist
+          keep_files: false
+          force_orphan: true
 
       - name: Upload GitHub Pages Artifact
         uses: actions/upload-pages-artifact@v3
