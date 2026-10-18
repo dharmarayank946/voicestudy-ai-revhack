@@ -37,7 +37,7 @@ jobs:
           cd frontend
           npm run build
         env:
-          VITE_BASE_PATH: /voicestudy-ai/
+          VITE_BASE_PATH: /voicestudy-ai-revhack/
           VITE_API_URL: https://voicestudy-ai-backend.onrender.com
 
 
