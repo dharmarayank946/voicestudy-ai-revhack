@@ -4,7 +4,10 @@
 > **Event:** EYFI Hackathon 2026  
 > **Track:** Meeting & Lecture Intelligence  
 > **Primary Brand Colors:** Deep Navy (#10152B) & Electric Violet (#7357FF)  
-> **Repository:** [https://github.com/dharmarayank946/voicestudy-ai-revhack](https://github.com/dharmarayank946/voicestudy-ai-revhack)
+> **Repository:** [https://github.com/dharmarayank946/voicestudy-ai-revhack](https://github.com/dharmarayank946/voicestudy-ai-revhack)  
+> **Live Vercel Web App:** [https://voicestudy-ai-revhack.vercel.app](https://voicestudy-ai-revhack.vercel.app)  
+> **Live GitHub Pages Backup:** [https://dharmarayank946.github.io/voicestudy-ai-revhack/](https://dharmarayank946.github.io/voicestudy-ai-revhack/)  
+> **Backend API (Render):** [https://voicestudy-ai-revhack-backend.onrender.com](https://voicestudy-ai-revhack-backend.onrender.com)
 
 ---
 
