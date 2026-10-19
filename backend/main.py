@@ -28,7 +28,8 @@ allowed_origins = [
     "http://localhost:3000",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:3000",
-    "https://dharmarayank946.github.io"
+    "https://dharmarayank946.github.io",
+    "https://voicestudy-ai-revhack.vercel.app"
 ]
 if allowed_origins_env:
     for origin in allowed_origins_env.split(","):

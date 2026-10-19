@@ -19,7 +19,7 @@ services:
       - key: LYZR_CHAT_URL
         value: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
       - key: LYZR_TIMEOUT
-        value: "3.0"
+        value: "15.0"
       - key: LYZR_API_KEY
         sync: false
       - key: LYZR_AGENT_ID

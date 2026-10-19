@@ -1,7 +1,7 @@
 import json
 import logging
 from typing import Dict, Any, List
-from backend.services.lyzr_agent_framework import lyzr_framework
+from backend.services.lyzr_agent_framework import lyzr_framework, LyzrAPIError, LyzrTimeoutError
 
 logger = logging.getLogger("voicestudy.quiz_agent")
 
@@ -52,15 +52,14 @@ Context Notes:
 {memory_context}
 """
 
-        raw_response = lyzr_framework.execute_agent_prompt(
-            agent_name="Quiz",
-            system_instructions=SYSTEM_INSTRUCTIONS,
-            user_input=prompt,
-            temperature=0.4,
-            json_output=True
-        )
-
         try:
+            raw_response = lyzr_framework.execute_agent_prompt(
+                agent_name="Quiz",
+                system_instructions=SYSTEM_INSTRUCTIONS,
+                user_input=prompt,
+                temperature=0.4,
+                json_output=True
+            )
             start_idx = raw_response.find("{")
             end_idx = raw_response.rfind("}") + 1
             if start_idx != -1 and end_idx != 0:
@@ -72,17 +71,20 @@ Context Notes:
                     "count": len(parsed.get("questions", [])),
                     "questions": parsed.get("questions", [])
                 }
+        except (LyzrAPIError, LyzrTimeoutError) as te:
+            logger.warning(f"Lyzr Agent unavailable or timed out: {te}. Using structured topic quiz fallback.")
         except Exception as e:
             logger.warning(f"Quiz agent failed to parse JSON: {e}. Falling back to default generated structure.")
 
-        # Structured fallback if parse fails
+        # Structured fallback if API times out or parse fails
         questions_selected = lyzr_framework._build_topic_quiz_pool(topic_or_subject, num_questions)
         return {
             "status": "success",
             "title": f"{topic_or_subject} Revision Quiz",
             "difficulty": difficulty,
             "count": len(questions_selected),
-            "questions": questions_selected
+            "questions": questions_selected,
+            "fallback_active": True
         }
 
 quiz_agent = QuizAgent()

@@ -132,7 +132,7 @@ class LyzrAgentFramework:
                 "session_id": effective_session_id,
                 "message": user_input
             }
-            timeout_sec = float(os.getenv("LYZR_TIMEOUT", "3.0"))
+            timeout_sec = float(os.getenv("LYZR_TIMEOUT", "15.0"))
             try:
                 with httpx.Client(timeout=timeout_sec) as client:
                     response = client.post(self.chat_url, headers=headers, json=payload)

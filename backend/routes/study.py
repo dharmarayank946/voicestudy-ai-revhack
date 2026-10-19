@@ -119,7 +119,7 @@ def process_study_request(req: StudyRequest):
         provider_status = lyzr_framework.get_framework_status()
         response_dict = {
             "intent": "ERROR",
-            "orchestration": {"subject": "General", "topic": "Lyzr Execution"},
+            "orchestration": {"subject": req.subject_override or "General", "topic": req.topic_override or "Lyzr Execution"},
             "voice_meta": processed_voice,
             "ai_provider": provider_status,
             "agent_executed": "Lyzr Agent",
@@ -136,7 +136,7 @@ def process_study_request(req: StudyRequest):
         provider_status = lyzr_framework.get_framework_status()
         response_dict = {
             "intent": "ERROR",
-            "orchestration": {"subject": "General", "topic": "General Execution"},
+            "orchestration": {"subject": req.subject_override or "General", "topic": req.topic_override or "General Execution"},
             "voice_meta": processed_voice,
             "ai_provider": provider_status,
             "agent_executed": "VoiceStudy Backend",
